@@ -3,8 +3,11 @@ const inputEl = document.getElementById("input-el")
 const inputBtn = document.getElementById("input-btn")
 const delBtn = document.getElementById("delete-btn")
 const ulEl = document.getElementById("ul-el")
+const curTab = document.getElementById("add-current")
+const allTab = document.getElementById("add-all")
 // 1. Store the delete button in a deleteBtn variable
-let leadsFromLocalStorage = JSON.parse( localStorage.getItem("myLeads") )
+let groupName = "general"
+let leadsFromLocalStorage = JSON.parse( localStorage.getItem(groupName) )
 
 if (leadsFromLocalStorage) {
     myLeads = leadsFromLocalStorage
@@ -16,22 +19,48 @@ if (leadsFromLocalStorage) {
 
 inputEl.addEventListener('keyup', function(e){
     if (e.key === 'Enter' || e.keyCode === 13){
-        myLeads.push(inputEl.value)
+        myLeads.push({name:inputEl.value, href:inputEl.value})
     inputEl.value = ""
-    localStorage.setItem("myLeads", JSON.stringify(myLeads) )
+    localStorage.setItem(groupName, JSON.stringify(myLeads) )
     renderLeads(myLeads)
     }
 })
 
+curTab.addEventListener('click',function(){
+    chrome.tabs.query({active:true, currentWindow: true}, function(tabs) {
+        // console.log(tabs)
+        // since only one tab should be active and in the current window at once
+        // the return variable should only have one entry
+        myLeads.push({name:tabs[0].title, href:tabs[0].url})
+        localStorage.setItem(groupName, JSON.stringify(myLeads) )
+        renderLeads(myLeads)
+    })
+    
+})
+
+allTab.addEventListener('click',function(){
+    chrome.tabs.query({currentWindow: true}, function(tabs) {
+        // console.log(tabs)
+        // since only one tab should be active and in the current window at once
+        // the return variable should only have one entry
+        for (let i = 0; i < tabs.length ; i++){
+            myLeads.push({name:tabs[i].title, href:tabs[i].url})
+        }
+        localStorage.setItem(groupName, JSON.stringify(myLeads) )
+        renderLeads(myLeads)
+    })
+    
+})
+
 inputBtn.addEventListener("click", function() {
-    myLeads.push(inputEl.value)
+    myLeads.push({name:inputEl.value, href:inputEl.value})
     inputEl.value = ""
-    localStorage.setItem("myLeads", JSON.stringify(myLeads) )
+    localStorage.setItem(groupName, JSON.stringify(myLeads) )
     renderLeads(myLeads)
 })
 
 delBtn.addEventListener("dblclick", function() {
-    localStorage.setItem("myLeads",null)
+    localStorage.setItem(groupName,null)
     myLeads = []
     renderLeads(myLeads)
 })
@@ -48,10 +77,10 @@ function renderLeads(myLeads) {
             <li>
                 
                 <div class=sites> 
-                <a target='_blank' href='${myLeads[i]}'>
-                ${myLeads[i]}
+                <a target='_blank' href='${myLeads[i].href}'>
+                ${myLeads[i].name}
                 </a>
-                <button class="del" id="delete-btn-${myLeads[i]}">🗑️</button> 
+                <button class="del" id="delete-btn-${myLeads[i]}">Del</button> 
                 </div>
             </li>
         `

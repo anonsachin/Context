@@ -1,13 +1,14 @@
 :root{
     /* light mode */
-    /* --background: #EEEEEE; */
-    /* --highlight:#31363F; */
-    /* --base: #76ABAE; */
+    --background: #EEEEEE;
+    --highlight:#31363F;
+    --text: #222831;
+    --base: #76ABAE;
     /* Dark mode */
-    --background: #7077A1;
-    --highlight:#2D3250;
-    --text: #424769;
-    --base: #F6B17A;
+    /* --background: #7077A1; */
+    /* --highlight:#2D3250; */
+    /* --text: #424769; */
+    /* --base: #F6B17A; */
 }
 
 body {
@@ -50,9 +51,11 @@ button {
     background: var(--highlight);
     color: var(--base);
     border-radius: 10px;
-    min-height: 30px;
-    min-width:  30px;
+    min-height: 35px;
+    min-width:  35px;
+    padding: 2px;
     border: none;
+    text-align: center;
 }
 
 .list{
