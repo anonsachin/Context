@@ -102,6 +102,11 @@ class ContextStore {
     getValues(){
         return this.list
     }
+
+    clear(){
+        this.list = []
+        localStorage.setItem(this.current, JSON.stringify([]))
+    }
 }
 
 export {
