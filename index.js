@@ -1,3 +1,5 @@
+import { ContextHandler, ContextStore} from "./src/Contexts.js"
+
 let myLeads = []
 const inputEl = document.getElementById("input-el")
 const inputBtn = document.getElementById("input-btn")
@@ -6,23 +8,27 @@ const ulEl = document.getElementById("ul-el")
 const curTab = document.getElementById("add-current")
 const allTab = document.getElementById("add-all")
 // 1. Store the delete button in a deleteBtn variable
-let groupName = "general"
-let leadsFromLocalStorage = JSON.parse( localStorage.getItem(groupName) )
+const contextHandler = new ContextHandler()
+let groupName = contextHandler.getContexts()[0]
+let contextStore = new ContextStore(groupName, ulEl)
+// let leadsFromLocalStorage = JSON.parse( localStorage.getItem(groupName) )
 
-if (leadsFromLocalStorage) {
-    myLeads = leadsFromLocalStorage
-    renderLeads(myLeads)
-}
+// if (leadsFromLocalStorage) {
+//     myLeads = leadsFromLocalStorage
+//     renderLeads(myLeads)
+// }
 
 // 2. Listen for double clicks on the delete button (google it!)
 // 3. When clicked, clear localStorage, myLeads, and the DOM
 
 inputEl.addEventListener('keyup', function(e){
     if (e.key === 'Enter' || e.keyCode === 13){
-        myLeads.push({name:inputEl.value, href:inputEl.value})
-    inputEl.value = ""
-    localStorage.setItem(groupName, JSON.stringify(myLeads) )
-    renderLeads(myLeads)
+        // myLeads.push({name:inputEl.value, href:inputEl.value})
+        contextStore.pushValue(inputEl.value, inputEl.value)
+        inputEl.value = ""
+        // localStorage.setItem(groupName, JSON.stringify(myLeads) )
+        // renderLeads(myLeads)
+        contextStore.render()
     }
 })
 

@@ -39,6 +39,24 @@ button {
     margin-right: 10px;
 }
 
+select {
+    display: block;
+    appearance: none;
+    -webkit-appearance: none;
+    width: 400px;
+    /* font-size: 1.15rem; */
+    padding: 0.675em 6em 0.675em 1em;
+    background-color: var(--background);
+    border: 1px solid var(--highlight);
+    border-radius: 0.25rem;
+    color: var(--base);
+    cursor: pointer;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 /* Style the button according to the provided design */
 
 #delete-btn {
